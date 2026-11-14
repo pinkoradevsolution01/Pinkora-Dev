@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 const projects = [
+  { title: 'JVerse AI', description: 'A local-first AI workspace that connects secure cloud collaboration with trusted Windows desktop capabilities.', href: '/portfolio#jverse-ai', image: '/images/jverse-ai.png', imageAlt: 'JVerse AI neon monogram' },
   { title: 'Smart Monitoring System', description: 'Connected CCTV, POS activity, and analytics in one retail command center.', href: '/portfolio', image: '/images/smart-monitoring-system.png', imageAlt: 'Smart Monitoring System logo' },
   { title: 'EduKonekta', description: 'A multi-tenant education platform with a PWA shell, modular API, and secure school-scoped data.', href: '/portfolio', image: '/images/edukonekta.png', imageAlt: 'EduKonekta logo' },
   { title: 'AuraLink', description: 'A private, local-first reflection app for noticing patterns and choosing a calm next step.', href: '/portfolio#auralink', image: '/images/auralink.png', imageAlt: 'AuraLink logo' },
