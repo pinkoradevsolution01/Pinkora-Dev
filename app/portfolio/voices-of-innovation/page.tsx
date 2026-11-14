@@ -4,6 +4,7 @@ import { PageHero } from '@/components/page-hero';
 
 export const metadata: Metadata = {
   title: 'Voices of Innovation',
+  alternates: { canonical: '/portfolio/voices-of-innovation' },
   description: 'Join JVerse’s community challenge board for real-world ideas, answers, and leaderboards.',
 };
 

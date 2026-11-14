@@ -4,6 +4,7 @@ import { PageHero } from '@/components/page-hero';
 
 export const metadata: Metadata = {
   title: 'Solutions',
+  alternates: { canonical: '/solutions' },
   description: 'Discover JVerse web development, business systems, mobile apps, and system integration solutions.',
 };
 

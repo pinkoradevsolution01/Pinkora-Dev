@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { FormEvent, useEffect, useState } from 'react';
+import { trackAnalyticsEvent } from '@/lib/analytics-client';
 
 type AccountUser = { id: string; name: string; email: string };
 
@@ -39,7 +40,10 @@ export function ContactForm() {
     const data = await response.json();
     setSending(false);
     setMessage(data.message ?? 'Unable to send your message.');
-    if (response.ok) event.currentTarget.reset();
+    if (response.ok) {
+      trackAnalyticsEvent('contact_form_submit');
+      event.currentTarget.reset();
+    }
   }
 
   if (checking) return <p className="next-contact-member-message">Checking your member access...</p>;

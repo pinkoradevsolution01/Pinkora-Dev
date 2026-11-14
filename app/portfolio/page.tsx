@@ -4,9 +4,11 @@ import type { Metadata } from 'next';
 import { ContentCopyDeterrent } from '@/components/content-copy-deterrent';
 import { DemoBooking } from '@/components/demo-booking';
 import { PageHero } from '@/components/page-hero';
+import { ProjectCaseStudy } from '@/components/project-case-study';
 
 export const metadata: Metadata = {
   title: 'Portfolio',
+  alternates: { canonical: '/portfolio' },
   description: 'Explore JVerse case studies: Smart Monitoring System, EduKonekta, and AuraLink—a private, local-first reflection app.',
   keywords: ['Full-Stack Developer Philippines', 'Business System Development', 'Flutter POS System', 'Next.js Developer', 'Education Technology'],
 };
@@ -77,6 +79,17 @@ export default function ProjectsPage() {
         <div className="next-card-grid next-feature-grid">{monitoringFeatures.map(([number, title, text]) => <article className="next-feature-card" key={title}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
       </section>
 
+      <ProjectCaseStudy
+        project="Smart Monitoring System"
+        image="/images/smart-monitoring-system.png"
+        imageAlt="Smart Monitoring System logo"
+        challenge="Retail teams need a dependable way to handle sales, inventory movements, people, and monitoring without switching between disconnected tools."
+        approach="Build one cross-platform operational workspace that connects POS, product controls, reporting, monitoring, licensing, offline storage, and cloud-supported workflows."
+        outcome="A clearer operational picture that helps teams review activity, reduce preventable handoff errors, and keep core work moving when connectivity is limited."
+        technologies={['Flutter', 'Dart', 'Node.js', 'MySQL', 'SQLite', 'Cloud services']}
+        workflow={['Capture sale or stock activity', 'Review role-specific business context', 'Use reporting and monitoring to make the next decision']}
+      />
+
       <section className="next-callout">
         <div className="next-container">
           <span className="next-eyebrow">Development journey</span>
@@ -102,6 +115,17 @@ export default function ProjectsPage() {
         <div className="next-card-grid next-feature-grid">{eduKonektaLayers.map(([number, title, text]) => <article className="next-feature-card" key={title}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
       </section>
 
+      <ProjectCaseStudy
+        project="EduKonekta"
+        image="/images/edukonekta.png"
+        imageAlt="EduKonekta logo"
+        challenge="Education platforms must support multiple schools while keeping each tenant’s records separate, understandable, and ready to grow."
+        approach="Use a stateless Next.js PWA shell, a modular NestJS API, shared contracts, and explicit tenant context at the API boundary."
+        outcome="A maintainable education-platform foundation with clear domain boundaries and school-scoped data designed for dependable expansion."
+        technologies={['Next.js', 'React', 'PWA', 'NestJS', 'PostgreSQL', 'Docker-ready']}
+        workflow={['Open the responsive school experience', 'Resolve tenant context at the API boundary', 'Keep school records scoped to the right organization']}
+      />
+
       <section className="next-callout">
         <div className="next-container">
           <span className="next-eyebrow">Reliable operations</span>
@@ -126,8 +150,19 @@ export default function ProjectsPage() {
         <div className="next-card-grid next-feature-grid">{auraLinkFeatures.map(([number, title, text]) => <article className="next-feature-card" key={title}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
       </section>
 
+      <ProjectCaseStudy
+        project="AuraLink"
+        image="/images/auralink.png"
+        imageAlt="AuraLink logo"
+        challenge="People need a calm way to notice personal patterns without their reflections becoming public content or being presented as clinical conclusions."
+        approach="Create a local-first reflection experience with optional sync, visual aura feedback, confidence-aware patterns, and granular sharing controls."
+        outcome="A private self-awareness space that helps people reflect, notice gentle trends, and choose a small supportive next step while preserving personal boundaries."
+        technologies={['PWA', 'Local-first', 'Supabase sync', 'Browser voice capture', 'Trusted Circles']}
+        workflow={['Check in with a word, writing, or voice', 'See a private aura and gentle pattern context', 'Choose one small next step or selectively share an aura pulse']}
+      />
+
       <section className="next-section next-container">
-        <div className="next-cta-card"><span className="next-eyebrow">Your next system</span><h2>Need a solution shaped around your workflow?</h2><p>Let&apos;s design the tools that make your team more capable every day.</p><Link href="/get-in-touch" className="next-button next-button-primary">Discuss a project</Link></div>
+        <div className="next-cta-card"><span className="next-eyebrow">Your next system</span><h2>Need a solution shaped around your workflow?</h2><p>Let&apos;s design the tools that make your team more capable every day.</p><div className="next-actions next-portfolio-cta-actions"><Link href="/portfolio#smart-monitoring-system" className="next-button next-button-primary">Book a free consultation</Link><Link href="/get-in-touch" className="next-button next-button-secondary">Discuss a project</Link></div></div>
       </section>
       </main>
     </ContentCopyDeterrent>

@@ -46,6 +46,30 @@ export async function GET(request: NextRequest) {
     const answers = (answersResult.data ?? []).filter((item) => item.user_id === userId).slice(0, 6);
     const feedback = feedbackResult.data ?? [];
     const demos = demosResult.data ?? [];
+    const ownerEmail = (process.env.OWNER_EMAIL ?? process.env.CONTACT_RECIPIENT_EMAIL ?? '').trim().toLowerCase();
+    const isOwner = Boolean(ownerEmail && user.email.trim().toLowerCase() === ownerEmail);
+    let ownerDashboard: { contacts: Array<{ id: string; name: string; email: string; subject: string; status: string; preferred_date: string | null; preferred_time: string | null; created_at: string }>; feedback: Array<{ id: string; user_name: string; type: string; rating: number; message: string; created_at: string }>; answers: Array<{ id: string; username: string; field: string; level: string; ai_score: number; created_at: string }>; analytics: Array<{ event_name: string; count: number }> } | null = null;
+
+    if (isOwner) {
+      const [contactsResult, ownerFeedbackResult, ownerAnswersResult, analyticsResult] = await Promise.all([
+        db.from('contacts').select('id, name, email, subject, status, preferred_date, preferred_time, created_at').order('created_at', { ascending: false }).limit(16),
+        db.from('feedback').select('id, user_name, type, rating, message, created_at').order('created_at', { ascending: false }).limit(16),
+        db.from('innovation_answers').select('id, username, field, level, ai_score, created_at').order('created_at', { ascending: false }).limit(16),
+        db.from('analytics_events').select('event_name').gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1_000).toISOString()).limit(1000),
+      ]);
+      if (contactsResult.error || ownerFeedbackResult.error || ownerAnswersResult.error || analyticsResult.error) {
+        throw contactsResult.error ?? ownerFeedbackResult.error ?? ownerAnswersResult.error ?? analyticsResult.error;
+      }
+
+      const counts = new Map<string, number>();
+      for (const item of analyticsResult.data ?? []) counts.set(item.event_name, (counts.get(item.event_name) ?? 0) + 1);
+      ownerDashboard = {
+        contacts: contactsResult.data ?? [],
+        feedback: ownerFeedbackResult.data ?? [],
+        answers: ownerAnswersResult.data ?? [],
+        analytics: [...counts.entries()].map(([event_name, count]) => ({ event_name, count })).sort((a, b) => b.count - a.count),
+      };
+    }
     const badges: Array<{ name: string; description: string }> = [];
 
     if (answers.length > 0) badges.push({ name: 'First Contribution', description: 'Shared a real-world idea with the community.' });
@@ -73,6 +97,7 @@ export async function GET(request: NextRequest) {
         answers,
         feedback,
         demos,
+        owner: ownerDashboard,
       },
     });
   } catch (error) {

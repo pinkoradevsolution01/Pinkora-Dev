@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { trackAnalyticsEvent } from '@/lib/analytics-client';
 import { KuyaJayAssistant } from '@/components/kuya-jay-assistant';
 
 const links = [
@@ -96,6 +97,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="next-site-shell">
+      <a className="next-skip-link" href="#main-content">Skip to main content</a>
       <header className="next-header">
         <div className="next-container next-header-inner">
           <Link href="/overview" className="next-brand" aria-label="JVerse overview">
@@ -149,6 +151,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
               <Link href={accountUser ? '/my-account' : '/my-account?mode=register'} className="next-account-link" onClick={() => setMenuOpen(false)}>
                 {accountUser ? 'My Account' : 'Sign up'}
               </Link>
+              <Link href="/portfolio#smart-monitoring-system" className="next-header-cta" onClick={() => { trackAnalyticsEvent('consultation_cta_click', { placement: 'header' }); setMenuOpen(false); }}>
+                Book a consultation
+              </Link>
             </div>
             <button className="next-theme-button" type="button" onClick={toggleTheme} aria-label="Toggle color theme">
               {theme === 'dark' ? '☾' : '☀'}
@@ -156,7 +161,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           </nav>
         </div>
       </header>
-      <div ref={contentRef} className="next-page-content">{children}</div>
+      <div id="main-content" ref={contentRef} className="next-page-content" tabIndex={-1}>{children}</div>
       <footer className="next-footer">
         <div className="next-container">
           <span>© {new Date().getFullYear()} JVerse. Built with intention.</span>

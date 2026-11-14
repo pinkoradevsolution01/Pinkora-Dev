@@ -11,6 +11,12 @@ type AccountDashboard = {
   answers: Array<{ field: string; level: string; answer: string; votes: number; ai_score: number; created_at: string }>;
   feedback: Array<{ id: string; type: string; message: string; rating: number; created_at: string }>;
   demos: Array<{ id: string; subject: string; status: string; created_at: string }>;
+  owner: {
+    contacts: Array<{ id: string; name: string; email: string; subject: string; status: string; preferred_date: string | null; preferred_time: string | null; created_at: string }>;
+    feedback: Array<{ id: string; user_name: string; type: string; rating: number; message: string; created_at: string }>;
+    answers: Array<{ id: string; username: string; field: string; level: string; ai_score: number; created_at: string }>;
+    analytics: Array<{ event_name: string; count: number }>;
+  } | null;
 };
 
 function announceAuthChange() {
@@ -266,6 +272,21 @@ export function AccountPanel() {
               {dashboard.demos.length > 0 ? <ul>{dashboard.demos.map((demo) => <li key={demo.id}><div><b>{demo.subject.replace('Free demo booking — ', '')}</b><span>{demo.status}</span></div><p>{new Date(demo.created_at).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' })}</p></li>)}</ul> : <p>Book a free Smart Monitoring System or EduKonekta demo from Portfolio.</p>}
             </article>
           </div>
+
+          {dashboard.owner && <section className="next-owner-dashboard" aria-labelledby="owner-dashboard-title">
+            <div className="next-user-dashboard-heading"><div><span className="next-eyebrow">Owner workspace</span><h3 id="owner-dashboard-title">JVerse operations</h3></div><span>Private to the configured site owner</span></div>
+            <div className="next-owner-metric-grid">
+              <div><span>Recent contacts</span><strong>{dashboard.owner.contacts.length}</strong></div>
+              <div><span>Recent feedback</span><strong>{dashboard.owner.feedback.length}</strong></div>
+              <div><span>Recent answers</span><strong>{dashboard.owner.answers.length}</strong></div>
+              <div><span>30-day events</span><strong>{dashboard.owner.analytics.reduce((total, item) => total + item.count, 0)}</strong></div>
+            </div>
+            <div className="next-owner-grid">
+              <article><div><span className="next-eyebrow">Contact & demo requests</span><strong>Inbox</strong></div>{dashboard.owner.contacts.length > 0 ? <ul>{dashboard.owner.contacts.map((contact) => <li key={contact.id}><div><b>{contact.subject}</b><span>{contact.status}</span></div><p>{contact.name} · {contact.email}</p>{contact.preferred_date && <small>{contact.preferred_date} {contact.preferred_time ? `at ${contact.preferred_time} PHT` : ''}</small>}</li>)}</ul> : <p>No contact requests yet.</p>}</article>
+              <article><div><span className="next-eyebrow">Community feedback</span><strong>Latest feedback</strong></div>{dashboard.owner.feedback.length > 0 ? <ul>{dashboard.owner.feedback.map((item) => <li key={item.id}><div><b>{item.user_name}</b><span>{item.rating}/5 ★</span></div><p>{item.message}</p></li>)}</ul> : <p>No feedback yet.</p>}</article>
+              <article><div><span className="next-eyebrow">Engagement</span><strong>30-day event totals</strong></div>{dashboard.owner.analytics.length > 0 ? <ul>{dashboard.owner.analytics.slice(0, 6).map((item) => <li key={item.event_name}><div><b>{item.event_name.replace(/_/g, ' ')}</b><span>{item.count}</span></div></li>)}</ul> : <p>Analytics will appear after visitors begin using the updated site.</p>}</article>
+            </div>
+          </section>}
         </section>}
 
         <form className="next-form next-account-settings" onSubmit={saveProfile}>

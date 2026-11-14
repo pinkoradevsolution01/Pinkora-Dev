@@ -4,6 +4,7 @@ import { PageHero } from '@/components/page-hero';
 
 export const metadata: Metadata = {
   title: 'Get in Touch',
+  alternates: { canonical: '/get-in-touch' },
   description: 'Contact JVerse to discuss a website, software system, or digital workflow.',
 };
 

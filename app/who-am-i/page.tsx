@@ -4,6 +4,7 @@ import { PageHero } from '@/components/page-hero';
 
 export const metadata: Metadata = {
   title: 'Who Am I',
+  alternates: { canonical: '/who-am-i' },
   description: 'Learn about Jay-Be Gubot, the developer and founder behind JVerse.',
 };
 

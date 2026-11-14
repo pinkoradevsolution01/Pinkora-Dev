@@ -5,6 +5,7 @@ import { PageHero } from '@/components/page-hero';
 
 export const metadata: Metadata = {
   title: 'Collaborations',
+  alternates: { canonical: '/collaborations' },
   description: 'Explore JVerse collaborations, trusted client work, and community feedback.',
 };
 
@@ -15,6 +16,7 @@ const clients = [
     status: 'Active project',
     text: 'A bilingual POS and advanced inventory platform that brings daily store operations into one clear system.',
     tags: ['POS', 'Inventory', 'Analytics'],
+    outcome: 'Focused on creating a clearer day-to-day store workflow.',
   },
   {
     name: 'Ready-To-Wear Orly Store',
@@ -22,6 +24,7 @@ const clients = [
     status: 'Trusted client',
     text: 'A trusted client using Smart Monitoring System to support daily business operations through clearer sales, inventory, and monitoring workflows.',
     tags: ['Smart Monitoring System', 'POS', 'Inventory'],
+    outcome: 'Focused on bringing key operational activity into one view.',
   },
 ];
 
@@ -43,10 +46,15 @@ export default function ClientsPage() {
               <h2>{client.name}</h2>
               <p className="next-location">{client.location}</p>
               <p>{client.text}</p>
+              <p className="next-client-outcome"><strong>Outcome focus:</strong> {client.outcome}</p>
               <div>{client.tags.map((tag) => <span className="next-tag" key={tag}>{tag}</span>)}</div>
             </article>
           ))}
         </div>
+      </section>
+      <section className="next-container next-trust-note" aria-label="Collaboration transparency">
+        <strong>Built on permission and real work.</strong>
+        <span>Client quotes, photos, logos, and measurable outcomes are shared only with the client&apos;s permission.</span>
       </section>
       <FeedbackSection
         allowSubmission

@@ -4,6 +4,7 @@ import { AccountPanel } from '@/components/account-panel';
 
 export const metadata: Metadata = {
   title: 'My Account',
+  robots: { index: false, follow: false },
   description: 'Sign up, sign in, and manage your JVerse account.',
 };
 

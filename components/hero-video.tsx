@@ -32,7 +32,7 @@ export function HeroVideo() {
 
   return (
     <section className="next-video-hero">
-      <video ref={videoRef} autoPlay muted loop playsInline preload="auto" aria-label="JVerse introduction">
+      <video ref={videoRef} autoPlay muted loop playsInline preload="metadata" aria-label="JVerse introduction">
         <source src="/Intro-1.mp4" type="video/mp4" />
       </video>
       <div className="next-video-hero-shade" aria-hidden="true" />

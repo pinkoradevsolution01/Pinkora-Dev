@@ -8,6 +8,7 @@ import { InnovationOverview } from '@/components/innovation-overview';
 
 export const metadata: Metadata = {
   title: 'Overview Page',
+  alternates: { canonical: '/overview' },
   description: 'JVerse is Jay-Be Gubot’s portfolio for practical digital systems, software solutions, and community innovation.',
 };
 

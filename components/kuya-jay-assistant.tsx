@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
+import { trackAnalyticsEvent } from '@/lib/analytics-client';
 import { jverseJourney } from '@/lib/jverse-journey';
 
 type AssistantLink = { href: string; label: string };
 type AssistantMessage = { from: 'assistant' | 'visitor'; text: string; links?: AssistantLink[] };
 
-const quickQuestions = ['What is the JVerse journey?', 'What solutions do you offer?', 'Show me the portfolio', 'What advice do you have for developers?'];
+const quickQuestions = ['Which project fits my business?', 'What solutions do you offer?', 'Show me the portfolio', 'What advice do you have for developers?'];
 
 function AssistantAvatar() {
   return <span className="next-assistant-avatar" aria-hidden="true"><img className="next-assistant-logo-dark" src="/darkmode-logo.png" alt="" /><img className="next-assistant-logo-light" src="/whitemode-logo.png" alt="" /></span>;
@@ -25,8 +26,11 @@ function answerQuestion(question: string): Omit<AssistantMessage, 'from'> {
   if (/technical battle|debug|scalab|integration|framework/.test(input)) return { text: jverseJourney.technical, links: [{ href: '/portfolio', label: 'Portfolio' }, { href: '/who-am-i', label: 'Who Am I' }] };
   if (/role|grind|marketer|trainer|problem solver/.test(input)) return { text: jverseJourney.roles, links: [{ href: '/who-am-i', label: 'Who Am I' }] };
   if (/journey|story|beginning|origin|vision|why.*jverse/.test(input)) return { text: jverseJourney.beginning, links: [{ href: '/who-am-i', label: 'Who Am I' }, { href: '/portfolio', label: 'Portfolio' }] };
+  if (/which project|fit.*business|retail|store|inventory|pos|sales|cctv|monitor/.test(input)) return { text: 'Smart Monitoring System is the best fit for retail or service businesses that need POS, inventory, sales visibility, and operational monitoring in one connected workflow.', links: [{ href: '/portfolio#smart-monitoring-system', label: 'Explore Smart Monitoring' }, { href: '/portfolio#smart-monitoring-system', label: 'Book a demo' }] };
+  if (/school|education|student|teacher|campus|learning/.test(input)) return { text: 'EduKonekta is designed for education environments that need a scalable, school-scoped platform with a resilient web experience and clear data boundaries.', links: [{ href: '/portfolio#edukonekta', label: 'Explore EduKonekta' }, { href: '/portfolio#edukonekta', label: 'Book a demo' }] };
+  if (/wellbeing|well-being|reflection|mental|aura|journal|personal pattern/.test(input)) return { text: 'AuraLink is a privacy-first self-awareness tool for gentle reflection, optional pattern insights, and small supportive next steps. It is not a medical or diagnostic service.', links: [{ href: '/portfolio#auralink', label: 'Explore AuraLink' }] };
   if (/service|solution|offer|build|develop|website|mobile|system/.test(input)) return { text: 'JVerse builds websites, business systems, mobile applications, system integrations, dashboards, and practical digital tools shaped around real workflows.', links: [{ href: '/solutions', label: 'Explore Solutions' }] };
-  if (/project|portfolio|smart monitoring|edukonekta|monitoring/.test(input)) return { text: 'The portfolio includes Smart Monitoring System for retail and business operations, plus EduKonekta, a multi-tenant education platform. You can explore their architecture and capabilities on the Portfolio page.', links: [{ href: '/portfolio', label: 'View Portfolio' }] };
+  if (/project|portfolio|smart monitoring|edukonekta|auralink|monitoring/.test(input)) return { text: 'The portfolio includes Smart Monitoring System for retail and business operations, EduKonekta for multi-tenant education, and AuraLink for private self-awareness journeys. You can explore their capabilities on the Portfolio page.', links: [{ href: '/portfolio', label: 'View Portfolio' }] };
   if (/stack|technology|tech|flutter|next|react|node|docker|kubernetes/.test(input)) return { text: 'The stack covers cross-platform, web, backend, data, cloud, and deployment tools—including Flutter, React, Next.js, Node.js, NestJS, MySQL, PostgreSQL, Docker, Kubernetes, Vercel, and more.', links: [{ href: '/who-am-i', label: 'View my stack' }] };
   if (/about|jay-be|jay be|developer|experience|who/.test(input)) return { text: 'Jay-Be Gubot is a full-stack developer focused on practical systems that make work clearer, smarter, and easier to manage.', links: [{ href: '/who-am-i', label: 'Who Am I' }] };
   if (/contact|email|hire|start|message|work together|get in touch/.test(input)) return { text: 'You can send a project inquiry through the contact form. Share the workflow or problem you want to improve, and JVerse can help map the right solution.', links: [{ href: '/get-in-touch', label: 'Get in Touch' }] };
@@ -47,18 +51,20 @@ export function KuyaJayAssistant() {
     const trimmedQuestion = question.trim();
     if (!trimmedQuestion) return;
     setMessages((current) => [...current, { from: 'visitor', text: trimmedQuestion }, { from: 'assistant', ...answerQuestion(trimmedQuestion) }]);
+    trackAnalyticsEvent('assistant_question', { source: 'typed' });
     setQuestion('');
   }
 
   function askQuickQuestion(quickQuestion: string) {
     setMessages((current) => [...current, { from: 'visitor', text: quickQuestion }, { from: 'assistant', ...answerQuestion(quickQuestion) }]);
+    trackAnalyticsEvent('assistant_quick_question', { source: 'suggestion' });
   }
 
   return (
     <aside className={`next-assistant ${open ? 'is-open' : ''}`} aria-label="Kuya Jay Assistant">
       {open && <section className="next-assistant-panel" aria-live="polite">
         <header className="next-assistant-header"><div><AssistantAvatar /><div><strong>Kuya Jay Assistant</strong><span>JVerse guide</span></div></div><button type="button" onClick={() => setOpen(false)} aria-label="Close Kuya Jay Assistant">×</button></header>
-        <div className="next-assistant-messages">{messages.map((message, index) => <div className={`next-assistant-message is-${message.from}`} key={`${message.from}-${index}`}><p>{message.text}</p>{message.links && <div className="next-assistant-links">{message.links.map((link) => <Link href={link.href} key={link.href} onClick={() => setOpen(false)}>{link.label}</Link>)}</div>}</div>)}</div>
+        <div className="next-assistant-messages">{messages.map((message, index) => <div className={`next-assistant-message is-${message.from}`} key={`${message.from}-${index}`}><p>{message.text}</p>{message.links && <div className="next-assistant-links">{message.links.map((link) => <Link href={link.href} key={`${link.href}-${link.label}`} onClick={() => setOpen(false)}>{link.label}</Link>)}</div>}</div>)}</div>
         <div className="next-assistant-suggestions">{quickQuestions.map((quickQuestion) => <button type="button" key={quickQuestion} onClick={() => askQuickQuestion(quickQuestion)}>{quickQuestion}</button>)}</div>
         <form className="next-assistant-form" onSubmit={submitQuestion}><label className="sr-only" htmlFor="kuya-jay-question">Ask Kuya Jay Assistant</label><input id="kuya-jay-question" value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="Ask about JVerse..." /><button type="submit" aria-label="Send question">Send</button></form>
       </section>}
