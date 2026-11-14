@@ -41,11 +41,46 @@ const auraLinkFeatures = [
   ['04', 'Meaningful support controls', 'Trusted Circles let people selectively share an aura pulse without exposing private journal text, voice data, notes, or encouragement verses.'],
 ];
 
+const jverseAiFeatures = [
+  ['01', 'One workspace, two trusted experiences', 'An authenticated Next.js workspace serves dashboard, chat, knowledge, projects, maps, and settings, while an Electron app provides a focused Windows desktop experience.'],
+  ['02', 'Local AI when privacy matters', 'Desktop mode can keep Qwen, Whisper, Piper, and the local agent on the user device through a localhost-only path rather than exposing local capabilities to the public network.'],
+  ['03', 'Voice, knowledge, and practical context', 'Streaming chat, voice transcription and speech, knowledge retrieval, memories, project support, and mapping are designed to work together through clear service boundaries.'],
+  ['04', 'Security-led architecture', 'Supabase Auth, PostgreSQL, storage, realtime, row-level security, server-managed sessions, and a narrow Electron IPC bridge protect the workspace and its desktop capabilities.'],
+];
+
 export default function ProjectsPage() {
   return (
     <ContentCopyDeterrent>
       <main>
       <PageHero eyebrow="Portfolio" title="Practical technology, thoughtfully connected." description="Solutions that enhance visibility, strengthen operations, and help teams move with confidence." />
+
+      <section id="jverse-ai" className="next-section next-container next-edu-project-intro next-ai-project-highlight">
+        <div className="next-project-logo-panel next-ai-project-logo"><Image src="/images/jverse-ai.png" alt="JVerse AI neon monogram" fill priority sizes="(max-width: 800px) 100vw, 38vw" /></div>
+        <div>
+          <span className="next-label">Featured AI platform</span>
+          <h2 className="next-project-title">JVerse AI</h2>
+          <p className="next-project-summary">A local-first personal AI workspace that combines an authenticated web application with a trusted Windows desktop assistant for chat, voice, knowledge, project work, and controlled native capabilities.</p>
+          <p className="next-lead">It gives people a private local path for configured desktop features while keeping selected workspace data, authentication, and hosted capabilities behind secure cloud boundaries.</p>
+          <div className="next-demo-booking-action"><Link href="/get-in-touch" className="next-button next-button-primary">Discuss JVerse AI</Link></div>
+        </div>
+      </section>
+
+      <section className="next-section next-container">
+        <span className="next-eyebrow">AI workspace architecture</span>
+        <h2 className="next-section-title">Private local intelligence, connected when you choose.</h2>
+        <div className="next-card-grid next-feature-grid">{jverseAiFeatures.map(([number, title, text]) => <article className="next-feature-card" key={title}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+      </section>
+
+      <ProjectCaseStudy
+        project="JVerse AI"
+        image="/images/jverse-ai.png"
+        imageAlt="JVerse AI neon monogram"
+        challenge="Create an AI workspace that can offer modern cloud collaboration while preserving a clearly bounded local path for private desktop chat, voice, and approved computer capabilities."
+        approach="Combine a Next.js web interface, Supabase identity and workspace data, a FastAPI and LangGraph agent layer, and an Electron host that exposes only a narrow, validated preload bridge."
+        outcome="A foundation for a personal AI workspace where local processing, cloud synchronization, voice, knowledge, mapping, and desktop actions have explicit boundaries instead of being treated as one opaque system."
+        technologies={['Next.js 15', 'React', 'TypeScript', 'Supabase', 'FastAPI', 'LangGraph', 'Electron', 'Ollama', 'Qwen 2.5', 'Faster-Whisper', 'Piper']}
+        workflow={['Authenticate into the web workspace or trusted desktop shell', 'Route chat, voice, knowledge, or desktop requests through the appropriate secured boundary', 'Keep local agent services bound to localhost and synchronize only intentional workspace data']}
+      />
 
       <section className="next-section next-container next-edu-project-intro">
         <div className="next-project-logo-panel"><Image src="/images/smart-monitoring-system.png" alt="Smart Monitoring System logo" fill sizes="(max-width: 800px) 100vw, 38vw" /></div>
